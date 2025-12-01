@@ -26,7 +26,7 @@ class _VideoPlayersScreenState extends State<VideoPlayersScreen> {
       body: SafeArea(
         child: ValueListenableBuilder(
           valueListenable: _activeVolumeNotifier,
-          builder: (_, videoIndex, __) {
+          builder: (context, videoIndex, _) {
             return Wrap(
               direction: Axis.horizontal,
               runSpacing: 20.0,
