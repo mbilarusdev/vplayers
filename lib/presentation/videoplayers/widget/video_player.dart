@@ -27,7 +27,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _controller =
         VideoPlayerController.asset(
             AssetPaths.videoPath(videoIndex: widget.index),
-          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true)
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
           )
           ..initialize().then((_) {
             _startVideo();
@@ -36,7 +36,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   void didUpdateWidget(covariant VideoPlayerWidget oldWidget) {
-    if (widget.hasVolume != oldWidget.hasVolume || widget.index != oldWidget.index) {
+    if (widget.hasVolume != oldWidget.hasVolume ||
+        widget.index != oldWidget.index) {
       _refreshVolume();
     }
     super.didUpdateWidget(oldWidget);
@@ -51,14 +52,16 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             children: [
               VideoPlayer(_controller),
               IconButton(
-                icon: Icon(widget.hasVolume? Icons.volume_off: Icons.volume_up),
+                icon: Icon(
+                  widget.hasVolume ? Icons.volume_off : Icons.volume_up,
+                ),
                 color: Colors.black.withAlpha(100),
                 onPressed: () => widget.changeActiveVolume(index: widget.index),
               ),
             ],
           ),
         )
-      : Container();
+      : SizedBox();
 
   void _startVideo() {
     _refreshVolume();
@@ -66,12 +69,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     setState(() {});
   }
 
-  void _refreshVolume() =>
-    _controller.setVolume(
-      widget.hasVolume
-          ? Constants.maxVolume
-          : Constants.minVolume,
-    );
+  void _refreshVolume() => _controller.setVolume(
+    widget.hasVolume ? Constants.maxVolume : Constants.minVolume,
+  );
 
   @override
   void dispose() {
