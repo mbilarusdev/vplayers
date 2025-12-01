@@ -24,24 +24,29 @@ class _VideoPlayersScreenState extends State<VideoPlayersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Wrap(
-          direction: Axis.horizontal,
-          runSpacing: 20.0,
-          children: List.generate(
-            widget.videoPlayersCount,
-            (i) => VideoPlayerWidget(
-              index: i,
-              hasVolume: i == _activeVolumeNotifier.value,
-              changeActiveVolume: _changeActiveVolume,
-            ),
-          ),
+        child: ValueListenableBuilder(
+          valueListenable: _activeVolumeNotifier,
+          builder: (_, videoIndex, __) {
+            return Wrap(
+              direction: Axis.horizontal,
+              runSpacing: 20.0,
+              children: List.generate(
+                widget.videoPlayersCount,
+                (i) => VideoPlayerWidget(
+                  index: i,
+                  hasVolume: i == videoIndex,
+                  changeActiveVolume: _changeActiveVolume,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
   void _changeActiveVolume({required int index}) =>
-      setState(() => _activeVolumeNotifier.value = index);
+      _activeVolumeNotifier.value = index;
 
   @override
   void dispose() {
